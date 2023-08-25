@@ -17,13 +17,21 @@ class ComplaintController extends Controller
      */
     public function index()
     {
-        $complaints = Complaint::orderBy('created_at', 'desc')->get();
+        $user = Auth::id();
+        $ownedComplaint = Complaint::where('user_id', $user)->orderBy('created_at', 'desc')->get();
+        $complaints = Complaint::where('user_id', '!=', $user)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($ownedComplaint as $data) {
+            $data->uploaded_at = $data->created_at->format('d M Y, H:i') . ' WIB';
+        };
 
         foreach ($complaints as $complaint) {
             $complaint->uploaded_at = $complaint->created_at->format('d M Y, H:i') . ' WIB';
         };
 
-        return view('dashboard.complaint.complaints', compact('complaints'));
+        return view('dashboard.complaint.complaints', compact('complaints', 'ownedComplaint'));
     }
 
     /**

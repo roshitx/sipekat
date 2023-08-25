@@ -1,7 +1,7 @@
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
     <div class="p-12 text-gray-800 overflow-x-auto">
         <div class="max-w-full">
-            @if ($complaint->images->count() > 0)
+            @if ($complaint->images->count() > 1)
             {{-- Carousel Image --}}
             <div id="default-carousel" class="relative w-full mb-5" data-carousel="slide">
                 <!-- Carousel wrapper -->
@@ -11,44 +11,8 @@
                         <img src="{{ asset('storage/complaint_images/' . $image->image_path) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 cursor-pointer" alt="Complaint Image" onclick="showModal('{{ asset('storage/complaint_images/' . $image->image_path) }}')" />
                     </div>
                     @endforeach
-
-                    <!-- The Modal -->
-                    <div id="modal" class="hidden fixed top-0 left-0 z-80 w-screen h-screen bg-black/70 flex justify-center items-center z-50">
-                        <!-- The close button -->
-                        <div class="p-5 rounded-md hover:bg-primary fixed z-90 top-6 right-8 bg-[#4C4C4C]">
-                            <a class="fixed z-90 top-8 right-10 text-white text-5xl font-bold" href="javascript:void(0)" onclick="closeModal()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minimize-2">
-                                    <polyline points="4 14 10 14 10 20" />
-                                    <polyline points="20 10 14 10 14 4" />
-                                    <line x1="14" x2="21" y1="10" y2="3" />
-                                    <line x1="3" x2="10" y1="21" y2="14" />
-                                </svg>
-                            </a>
-                        </div>
-
-                        <!-- A big image will be displayed here -->
-                        <img id="modal-img" class="max-w-[380px] max-h-[250px] lg:max-w-[1080px] lg:max-h-[960px] object-cover" />
-                    </div>
-
-                    <script>
-                        // Get the modal by id
-                        var modal = document.getElementById("modal");
-
-                        // Get the modal image tag
-                        var modalImg = document.getElementById("modal-img");
-
-                        // this function is called when a small image is clicked
-                        function showModal(src) {
-                            modal.classList.remove('hidden');
-                            modalImg.src = src;
-                        }
-
-                        // this function is called when the close button is clicked
-                        function closeModal() {
-                            modal.classList.add('hidden');
-                        }
-
-                    </script>
+                    {{-- Modal Image --}}
+                    <x-modal-image/>
                 </div>
                 <!-- Slider controls -->
                 <button type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
@@ -67,6 +31,15 @@
                         <span class="sr-only">Next</span>
                     </span>
                 </button>
+            </div>
+            @elseif($complaint->images->count() == 1)
+            <div class="relative w-full h-56 md:h-96 mb-5 rounded-md overflow-hidden hover:shadow-lg transition-all duration-300 ease-in-out">
+                @foreach ($complaintImages as $index => $image)
+                <img src="{{ asset('storage/complaint_images/' . $image->image_path) }}" class="w-full cursor-pointer" alt="Complaint Image" onclick="showModal('{{ asset('storage/complaint_images/' . $image->image_path) }}')" />
+                @endforeach
+
+                <!-- The Modal -->
+                <x-modal-image/>
             </div>
             @else
             <div class="relative w-full mb-5 rounded-lg overflow-hidden">
