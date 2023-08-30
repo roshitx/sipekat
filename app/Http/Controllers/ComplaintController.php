@@ -7,6 +7,7 @@ use App\Models\Complaint;
 use Illuminate\Http\Request;
 use App\Enums\ComplaintStatus;
 use App\Models\ComplaintImages;
+use App\Models\Respon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -83,8 +84,9 @@ class ComplaintController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Complaint $complaint)
+    public function show($slug)
     {
+        $complaint = Complaint::where('slug', $slug)->firstOrFail();
         $complaint->uploaded_at = $complaint->created_at->format('d M Y, H:i') . ' WIB';
         $statusOptions = [
             'Belum Diproses' => "Belum Diproses",
@@ -94,19 +96,22 @@ class ComplaintController extends Controller
 
         // Complaint Images
         $complaintImages = ComplaintImages::where('complaint_id', $complaint->id)->get();
+        $responses = Respon::where('complaint_id', $complaint->id)->get();
 
         return view('dashboard.complaint.complaint-detail', [
             'complaint' => $complaint,
             'complaintImages' => $complaintImages,
-            'statusOptions' => $statusOptions
+            'statusOptions' => $statusOptions,
+            'responses' => $responses
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Complaint $complaint)
+    public function edit($slug)
     {
+        $complaint = Complaint::where('slug', $slug)->firstOrFail();
         return view('dashboard.complaint.complaint-edit', [
             'complaint' => $complaint,
         ]);
@@ -150,7 +155,7 @@ class ComplaintController extends Controller
             };
         }
 
-        return redirect()->route('complaints.show', $complaint->id)->with('success', 'Aduan anda berhasil diubah.');
+        return redirect()->route('complaints.show', $complaint->slug)->with('success', 'Aduan anda berhasil diubah.');
     }
 
     /**

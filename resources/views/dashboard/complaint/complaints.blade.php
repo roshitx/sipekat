@@ -19,11 +19,14 @@
                         {{ __('Lapor') }}</x-button-link-primary>
 
                     <div class="bg-gray-100 rounded-lg px-5 py-3 mb-20">
-                        <h1 class="text-3xl font-bold my-5">Aduan anda</h1>
+                        <h1 class="text-3xl font-bold my-5 text-center">Aduan anda</h1>
+                        @if ($ownedComplaint->isEmpty())
+                            <h1 class="text-lg font-medium my-5 text-center">Anda belum mengirim aduan. Laporkan aduanmu sekarang!</h1>
+                        @else
                         <div class="grid grid-col grid-cols-2 lg:grid-cols-4 gap-5">
                             @foreach ($ownedComplaint as $data)
                             <div class="bg-slate-200 group rounded-xl overflow-hidden shadow-md hover:shadow-lg hover:bg-slate-300 transition-all duration-300 ease-out cursor-pointer">
-                                <a href="{{ route('complaints.show', $data->id) }}">
+                                <a href="{{ route('complaints.show', $data->slug) }}">
                                     <div class="block overflow-hidden relative w-full h-[150px]">
                                         @if ($data->images->count() > 0)
                                         <img class="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-105" src="{{ asset('storage/complaint_images/' . $data->images->first()->image_path) }}" draggable="false" alt="Complaint Image" />
@@ -33,7 +36,7 @@
                                     </div>
 
                                     <div class="details flex flex-col justify-between">
-                                        <h1 class="text-base lg:text-lg font-semibold px-3 mt-1 truncate">{{ $data->title }}</h1>
+                                        <h1 class="text-sm lg:text-lg font-semibold px-3 mt-1 truncate">{{ $data->title }}</h1>
                                         <p class="px-3 text-xs lg:text-sm text-gray-500">
                                             <x-person-icon /> <span class="align-middle inline-block">{{ $data->user->name }}</span></p>
                                         <p class="px-3 text-xs lg:text-sm text-gray-500 mb-3">
@@ -44,13 +47,14 @@
                             </div>
                             @endforeach
                         </div>
+                        @endif
                     </div>
 
                     <h1 class="text-3xl font-bold my-5">Aduan lain</h1>
                     <div class="grid grid-col grid-cols-2 lg:grid-cols-4 gap-5">
                         @foreach ($complaints as $complaint)
                         <div class="bg-slate-200 group rounded-xl overflow-hidden shadow-md hover:shadow-lg hover:bg-slate-300 transition-all duration-300 ease-out cursor-pointer">
-                            <a href="{{ route('complaints.show', $complaint->id) }}">
+                            <a href="{{ route('complaints.show', $complaint->slug) }}">
                                 <div class="block overflow-hidden relative w-full h-[150px]">
                                     @if ($complaint->images->count() > 0)
                                     <img class="object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-105" src="{{ asset('storage/complaint_images/' . $complaint->images->first()->image_path) }}" draggable="false" alt="Complaint Image" />

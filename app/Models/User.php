@@ -14,10 +14,19 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
+        'bio',
+        'gender',
+        'role'
     ];
 
     public function complaints(): HasMany
     {
         return $this->hasMany(Complaint::class);
+    }
+
+    public function responses(): HasMany
+    {
+        return $this->hasMany(Respon::class);
     }
 }

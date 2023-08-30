@@ -1,7 +1,7 @@
                     <!-- The Modal -->
                     <div id="modal" class="hidden fixed top-0 left-0 z-80 w-screen h-screen bg-black/70 flex justify-center items-center z-50">
                         <!-- The close button -->
-                        <div class="p-5 rounded-md hover:bg-primary fixed z-90 top-6 right-8 bg-[#4C4C4C]">
+                        <div class="p-5 rounded-md hover:bg-primary fixed z-90 top-6 right-8 bg-[#4C4C4C] transition-colors duration-300 ease-in-out">
                             <a class="fixed z-90 top-8 right-10 text-white text-5xl font-bold" href="javascript:void(0)" onclick="closeModal()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minimize-2">
                                     <polyline points="4 14 10 14 10 20" />

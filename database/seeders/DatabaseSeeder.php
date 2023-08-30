@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Roshit',
             'email' => 'auliarasyidalzahrawi@gmail.com',
             'password' => Hash::make('rosyid07'),
-            'gender' => 'male',
+            'gender' => 'pria',
             'role' => 'admin'
         ]);
 
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Roshit Masyarakat',
             'email' => 'roshit.masyarakat@gmail.com',
             'password' => Hash::make('rosyid07'),
-            'gender' => 'male',
+            'gender' => 'pria',
             'role' => 'masyarakat'
         ]);
 
@@ -43,11 +43,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'Roshit Petugas',
             'email' => 'roshit.petugas@gmail.com',
             'password' => Hash::make('rosyid07'),
-            'gender' => 'male',
+            'gender' => 'pria',
             'role' => 'petugas'
         ]);
 
-        User::factory(15)->create();
+        $this->call([
+            UserSeeder::class
+        ]);
         Complaint::factory(10)->create();
     }
 }

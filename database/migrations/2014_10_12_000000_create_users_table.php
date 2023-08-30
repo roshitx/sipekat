@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->enum('gender', ['male', 'female', 'other']);
+            $table->enum('gender', ['pria', 'wanita', 'lainnya']);
             $table->enum('role', ['admin', 'petugas', 'masyarakat'])->default('masyarakat');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->text('bio')->nullable();
             $table->text('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -26,8 +26,20 @@
 
         <div>
             <x-input-label for="email" :value="__('Email')" required />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="email" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
+        </div>
+
+        <div class="max-w-full">
+            <x-input-label for="gender" :value="__('Jenis Kelamin')" required/>
+            <x-select-input id="gender" name="gender" :options="$genderOptions" :selected="$user->gender"/>
+            <x-input-error class="mt-2" :messages="$errors->get('gender')" />
+        </div>
+
+        <div>
+            <x-input-label for="bio" :value="__('Bio')" />
+            <x-text-input id="bio" name="bio" type="text" class="mt-1 block w-full" :value="old('bio', $user->bio)" required />
+            <x-input-error class="mt-2" :messages="$errors->get('bio')" />
         </div>
 
         <div>

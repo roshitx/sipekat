@@ -18,8 +18,16 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $genderOptions = [
+            'pria' => 'Pria',
+            'wanita' => 'Wanita',
+            'lainnya' => 'Lainnya',
+            // Add more options as needed
+        ];
+
         return view('profile.edit', [
             'user' => $request->user(),
+            'genderOptions' => $genderOptions
         ]);
     }
 
@@ -29,7 +37,6 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-
         $user->fill($request->validated());
 
         if ($request->hasFile('avatar')) {

@@ -15,7 +15,7 @@ class Petugas
      */
     public function handle(Request $request, Closure $next): Response
         {
-            if ($request->user() && $request->user()->role === 'petugas') {
+            if ($request->user()->role === 'petugas') {
                 return $next($request);
             }
 

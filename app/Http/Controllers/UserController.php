@@ -31,9 +31,9 @@ class UserController extends Controller
 
         // Define the $selectOptions variable here
         $genderOptions = [
-            'male' => 'Male',
-            'female' => 'Female',
-            'other' => 'Other',
+            'pria' => 'Pria',
+            'wanita' => 'Wanita',
+            'lainnya' => 'Lainnya',
             // Add more options as needed
         ];
 
@@ -56,7 +56,8 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:3',
             'role' => 'required',
-            'avatar' => 'image|mimes:jpeg,png,jpg|max:2048'
+            'avatar' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'bio' => 'string|max:255'
         ]);
 
         $validatedData['password'] = Hash::make($validatedData['password']);
@@ -79,7 +80,17 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        $genderOptions = [
+            'pria' => 'Pria',
+            'wanita' => 'Wanita',
+            'lainnya' => 'Lainnya',
+            // Add more options as needed
+        ];
+
+        return view('profile.edit', [
+            'user' => $user,
+            'genderOptions' => $genderOptions,
+        ]);
     }
 
     /**
@@ -88,16 +99,16 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $genderOptions = [
-            'male' => 'Male',
-            'female' => 'Female',
-            'other' => 'Other',
+            'pria' => 'Pria',
+            'wanita' => 'Wanita',
+            'lainnya' => 'Lainnya',
             // Add more options as needed
         ];
 
         $roleOptions = [
             'admin' => 'Admin',
-            'seller' => 'Seller',
-            'user' => 'User',
+            'petugas' => 'Petugas',
+            'masyarakat' => 'Masyarakat',
         ];
 
         return view('dashboard.user.user-edit', compact('genderOptions', 'roleOptions', 'user'));
@@ -111,7 +122,8 @@ class UserController extends Controller
     {
         $req->validate([
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'avatar' => 'image|mimes:jpeg,png,jpg|max:2048'
+            'avatar' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'bio' => 'string|max:255'
         ]);
         $data = $req->except('_token');
         if ($req->filled('password')) {

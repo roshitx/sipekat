@@ -19,17 +19,23 @@
                 <div class="p-12 text-gray-800">
                     <div class="max-w-full">
                         <h1 class="text-center font-semibold text-3xl mb-8">Respon Petugas</h1>
-                        <form action="" method="">
-                            <div class="max-w-lg">
-                                <div class="grid grid-cols-1 lg:grid-cols-3 justify-between">
-                                    <div class="form-control">
-                                        <x-input-label for="status" :value="__('Status')" required />
-                                        <x-select-input id="status" name="status" :options="$statusOptions" :selected="$complaint->status" required/>
-                                        <x-input-error class="mt-2" :messages="$errors->get('status')" />
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'petugas')
+                        @include('dashboard.complaint.partials.form-respon')
+                        @endif
+
+                        <div class="p-5 bg-white mt-10">
+                            @if(!$responses->isEmpty())
+                                @include('dashboard.complaint.partials.respon')
+                            @else
+                            @if (Auth::user()->id == $complaint->user->id)
+                            <h1 class="text-center text-black text-lg">Aduan anda belum direspon oleh petugas. Mohon tunggu.</h1>
+                            @else
+                            <h1 class="text-center text-black text-lg">Aduan ini belum memiliki respon.</h1>
+                            @endif
+                            @endif
+
+
+                        </div>
                     </div>
                 </div>
             </div>

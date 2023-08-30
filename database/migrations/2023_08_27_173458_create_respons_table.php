@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('complaints', function (Blueprint $table) {
+        Schema::create('respons', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('title');
-            $table->text('description');
-            $table->string('status')->default(\App\Enums\ComplaintStatus::BELUM_DIPROSES);
-            $table->string('slug');
+            $table->unsignedBigInteger('complaint_id');
+            $table->text('content');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('complaint_id')->references('id')->on('complaints')->onDelete('cascade');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('complaints');
+        Schema::dropIfExists('respons');
     }
 };
