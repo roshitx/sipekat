@@ -79,7 +79,7 @@
                         </div>
 
                         <x-primary-button>Simpan</x-primary-button>
-                        <x-button-link-secondary href="{{ route('complaints.show', $complaint->id) }}">Batal</x-button-link-secondary>
+                        <x-button-link-secondary href="{{ route('complaints.show', $complaint->slug) }}">Batal</x-button-link-secondary>
                     </form>
                 </div>
             </div>

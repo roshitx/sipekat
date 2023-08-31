@@ -93,9 +93,9 @@
 
                         <div class="flex items-center p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
                             <div class="p-3 mr-4 text-cyan-500 bg-cyan-100 rounded-full dark:text-teal-100 dark:bg-teal-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 384 512">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-5 w-5" viewBox="0 0 448 512">
                                     <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                                    <path d="M32 0C14.3 0 0 14.3 0 32S14.3 64 32 64V75c0 42.4 16.9 83.1 46.9 113.1L146.7 256 78.9 323.9C48.9 353.9 32 394.6 32 437v11c-17.7 0-32 14.3-32 32s14.3 32 32 32H64 320h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V437c0-42.4-16.9-83.1-46.9-113.1L237.3 256l67.9-67.9c30-30 46.9-70.7 46.9-113.1V64c17.7 0 32-14.3 32-32s-14.3-32-32-32H320 64 32zM288 437v11H96V437c0-25.5 10.1-49.9 28.1-67.9L192 301.3l67.9 67.9c18 18 28.1 42.4 28.1 67.9z" /></svg>
+                                    <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg>
                             </div>
                             <div>
                                 <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -106,10 +106,41 @@
                                 </p>
                             </div>
                         </div>
+
+                        <div class="flex items-center p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+                            <div class="p-3 mr-4 text-indigo-500 bg-indigo-100 rounded-full dark:text-teal-100 dark:bg-teal-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-5 w-5" viewBox="0 0 512 512">
+                                    <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                    <path d="M205 34.8c11.5 5.1 19 16.6 19 29.2v64H336c97.2 0 176 78.8 176 176c0 113.3-81.5 163.9-100.2 174.1c-2.5 1.4-5.3 1.9-8.1 1.9c-10.9 0-19.7-8.9-19.7-19.7c0-7.5 4.3-14.4 9.8-19.5c9.4-8.8 22.2-26.4 22.2-56.7c0-53-43-96-96-96H224v64c0 12.6-7.4 24.1-19 29.2s-25 3-34.4-5.4l-160-144C3.9 225.7 0 217.1 0 208s3.9-17.7 10.6-23.8l160-144c9.4-8.5 22.9-10.6 34.4-5.4z" /></svg>
+                            </div>
+                            <div>
+                                <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                                    Respon dikirim
+                                </p>
+                                <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                                    {{ $responDikirim }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
+                    <div class="grid grid-cols-1 lg:grid-cols-2">
+                        <div class="p-5 bg-white shadow-md rounded-md">
+                            <p class="font-medium text-lg">Gender Chart</p>
+                            {{-- Disini canvas chart.js nya --}}
+                            <canvas id="genderChart" class="max-w-lg max-h-80"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+    // Data gender dari user (contoh)
+const genderData = {
+    male: 30,
+    female: 40,
+    other: 10,
+};
+    </script>
 </x-app-layout>

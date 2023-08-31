@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', WelcomeController::class)->name('welcome');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', DashboardController::class)->name('dashboard')->middleware('admin');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('admin');
     Route::resource('respons', ResponController::class);
 
     Route::group(['middleware' => 'admin', 'prefix' => 'dashboard'], function () {
@@ -48,5 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('gender-chart', [DashboardController::class, 'genderChart']);
 
 require __DIR__.'/auth.php';
