@@ -59,20 +59,6 @@
                     @else
                     <h1 class="text-3xl font-bold my-5">Aduan masyarakat</h1>
                     @endif
-                    <div class="mb-5 flex justify-end">
-                        <div class="join">
-                            <div>
-                                <div>
-                                    <input id="searchComplaints" name="search" class="input input-bordered bg-neutral-200 border-gray-300 focus:border-primary focus:ring-primary rounded-md shadow-sm transition-all duration-300 ease-in-out join-item" placeholder="Search" />
-                                </div>
-                            </div>
-                            <div class="indicator ">
-                                <button id="searchButton" class="btn bg-primary text-white border-gray-300 focus:border-primary focus:ring-primary rounded-md shadow-sm transition-all duration-300 ease-in-out join-item">
-                                    <x-search-icon />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="grid grid-col grid-cols-2 lg:grid-cols-4 gap-5 mb-7">
 
