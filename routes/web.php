@@ -21,7 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', WelcomeController::class)->name('welcome');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('admin');
+    Route::get('/dashboarda', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware(['admin']);
+    Route::get('/dashboardp', [DashboardController::class, 'dashboardPetugas'])->name('dashboard-petugas')->middleware(['petugas']);
     Route::resource('respons', ResponController::class);
 
     Route::group(['middleware' => 'admin', 'prefix' => 'dashboard'], function () {
@@ -38,17 +39,26 @@ Route::middleware('auth')->group(function () {
 
 
     Route::resource('complaints', ComplaintController::class)->except(['show', 'edit']);
+    Route::get('complaints/search', [ComplaintController::class, 'complaintsSearch'])->name('complaints.search');
     // Sluggable complaints route url
     Route::get('complaints/{slug}', [ComplaintController::class, 'show'])->name('complaints.show');
     Route::get('complaints/{slug}/edit', [ComplaintController::class, 'edit'])->name('complaints.edit');;
 
-    Route::get('reload-captcha', [ComplaintController::class, 'reloadCaptcha'])->name('reload-captcha');
+    Route::get('reload-captcha', [ComplaintController::class, 'reloadCaptcha'])->name('reload.captcha');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('gender-chart', [DashboardController::class, 'genderChart']);
+Route::get('/gender-chart', [DashboardController::class, 'genderChart']);
+Route::get('/gender-chart-petugas', [DashboardController::class, 'genderChartPetugas']);
+Route::get('/get-monthly-complaints-data', [DashboardController::class, 'getMonthlyComplaintsData']);
+
+// Route untuk input wilayah administratif indonesia
+Route::get('selectProv', [ComplaintController::class, 'getProv'])->name('provinsi.index');
+Route::get('selectRegenc/{id}', [ComplaintController::class, 'getRegencies']);
+Route::get('selectDistrict/{id}', [ComplaintController::class, 'getDistrict']);
+Route::get('selectVillage/{id}', [ComplaintController::class, 'getVillage']);
 
 require __DIR__.'/auth.php';

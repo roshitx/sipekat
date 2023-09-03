@@ -9,8 +9,8 @@
         </div>
 
         <div class="form-control">
-            <x-input-label for="respon" :value="__('Respon')" required />
-            <x-textarea id="respon" name="content" type="text" class="block w-full" :rows="'2'" :placeholder="'Masukan respon..'" required />
+            <x-input-label for="respon" :value="__('Tanggapan')" required />
+            <x-textarea id="respon" name="content" type="text" class="block w-full" :rows="'2'" :placeholder="'Masukan tanggapan..'" required />
             <x-input-error class="mt-2" :messages="$errors->get('content')" />
         </div>
 

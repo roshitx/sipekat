@@ -16,6 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->text('description');
+            $table->string('province')->nullable();
+            $table->string('regency')->nullable();
+            $table->string('district')->nullable();
+            $table->string('village')->nullable();
             $table->string('status')->default(\App\Enums\ComplaintStatus::BELUM_DIPROSES);
             $table->string('slug');
             $table->timestamps();

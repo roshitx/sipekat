@@ -16,8 +16,13 @@
                     <x-nav-link :href="route('welcome')" :active="request()->routeIs('/')">
                         {{ __('Welcome') }}</x-nav-link>
                     @auth
-                    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'petugas')
+                    @if(Auth::user()->role === 'admin')
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+                    @endif
+                    @if(Auth::user()->role === 'petugas')
+                    <x-nav-link :href="route('dashboard-petugas')" :active="request()->routeIs('dashboard*')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @endif

@@ -7,7 +7,11 @@ use App\Models\Complaint;
 use Illuminate\Http\Request;
 use App\Enums\ComplaintStatus;
 use App\Models\ComplaintImages;
+use App\Models\District;
+use App\Models\Provincy;
+use App\Models\Regency;
 use App\Models\Respon;
+use App\Models\Village;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,14 +26,14 @@ class ComplaintController extends Controller
         $ownedComplaint = Complaint::where('user_id', $user)->orderBy('created_at', 'desc')->get();
         $complaints = Complaint::where('user_id', '!=', $user)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(8);
 
         foreach ($ownedComplaint as $data) {
-            $data->uploaded_at = $data->created_at->format('d M Y, H:i') . ' WIB';
+            $data->uploaded_at = $data->updated_at->format('d M Y, H:i') . ' WIB';
         };
 
         foreach ($complaints as $complaint) {
-            $complaint->uploaded_at = $complaint->created_at->format('d M Y, H:i') . ' WIB';
+            $complaint->uploaded_at = $complaint->updated_at->format('d M Y, H:i') . ' WIB';
         };
 
         return view('dashboard.complaint.complaints', compact('complaints', 'ownedComplaint'));
@@ -52,14 +56,23 @@ class ComplaintController extends Controller
             'title' => 'required|string|max:150',
             'description' => 'required|string',
             'image_path.*' => 'mimes:png,jpg,jpeg,heic|max:5000',
-            'captcha' => 'required|captcha'
+            'captcha' => 'required|captcha',
         ]);
+        // Geolocation QUERY
+        $province = Provincy::where('id', $request->input('province'))->first();
+        $regency = Regency::where('id', $request->input('regency'))->first();
+        $district = District::where('id', $request->input('district'))->first();
+        $village = Village::where('id', $request->input('village'))->first();
 
         $complaint = new Complaint();
         $complaint->title = $validatedData['title'];
         $complaint->description = $validatedData['description'];
         $complaint->user_id = Auth::id();
         $complaint->status = ComplaintStatus::BELUM_DIPROSES;
+        $complaint->province = $province->name;
+        $complaint->regency = $regency->name;
+        $complaint->district = $district->name;
+        $complaint->village = $village->name;
         $complaint->save();
 
         if ($request->hasFile('image_path')) {
@@ -87,7 +100,7 @@ class ComplaintController extends Controller
     public function show($slug)
     {
         $complaint = Complaint::where('slug', $slug)->firstOrFail();
-        $complaint->uploaded_at = $complaint->created_at->format('d M Y, H:i') . ' WIB';
+        $complaint->uploaded_at = $complaint->updated_at->format('d M Y, H:i') . ' WIB';
         $statusOptions = [
             'Belum Diproses' => "Belum Diproses",
             'Sedang Diproses' => "Sedang Diproses",
@@ -129,7 +142,16 @@ class ComplaintController extends Controller
             'captcha' => 'required|captcha'
         ]);
         $complaint->update($validatedData);
-
+        // Geolocation QUERY
+        $province = Provincy::where('id', $request->input('province'))->first();
+        $regency = Regency::where('id', $request->input('regency'))->first();
+        $district = District::where('id', $request->input('district'))->first();
+        $village = Village::where('id', $request->input('village'))->first();
+        $complaint->province = $province->name;
+        $complaint->regency = $regency->name;
+        $complaint->district = $district->name;
+        $complaint->village = $village->name;
+        $complaint->save();
         if ($request->hasFile('image_path')) {
             // Old Images
             $oldImages = ComplaintImages::where('complaint_id', $complaint->id)->get();
@@ -179,5 +201,57 @@ class ComplaintController extends Controller
     public function reloadCaptcha()
     {
         return response()->json(['captcha' => captcha_img('flat')]);
+    }
+
+    public function getProv()
+    {
+        $data = Provincy::where('name', 'LIKE', '%' . request('q') . '%')->paginate(10);
+
+        return response()->json($data);
+    }
+
+    public function getRegencies($id)
+    {
+        $data = Regency::where('province_id', $id)->where('name', 'LIKE', '%' . request('q') . '%')->paginate(10);
+
+        return response()->json($data);
+    }
+
+    public function getDistrict($id)
+    {
+        $data = District::where('regency_id', $id)->where('name', 'LIKE', '%' . request('q') . '%')->paginate(10);
+
+        return response()->json($data);
+    }
+
+    public function getVillage($id)
+    {
+        $data = Village::where('district_id', $id)->where('name', 'LIKE', '%' . request('q') . '%')->paginate(10);
+
+        return response()->json($data);
+    }
+
+    public function complaintsSearch(Request $request)
+    {
+        $user = Auth::id();
+        $query = $request->input('query');
+
+        $ownedComplaint = Complaint::where('user_id', $user)->orderBy('created_at', 'desc')->get();
+
+        foreach ($ownedComplaint as $data) {
+            $data->uploaded_at = $data->updated_at->format('d M Y, H:i') . ' WIB';
+        };
+
+        $complaints = Complaint::where('title', 'LIKE', '%' . $query . '%')
+            ->orWhere('province', 'LIKE', '%' . $query . '%')
+            ->orWhere('regency', 'LIKE', '%' . $query . '%')
+            ->orWhere('district', 'LIKE', '%' . $query . '%')
+            ->orWhere('village', 'LIKE', '%' . $query . '%')
+            ->get();
+
+        // Render hasil pencarian sebagai HTML menggunakan view partial (misalnya: _complaints.blade.php)
+        $html = view('dashboard.complaint.partials._complaints', compact('complaints'))->render();
+
+        return response()->json(['complaints' => $html]);
     }
 }

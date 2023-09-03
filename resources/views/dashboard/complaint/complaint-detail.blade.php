@@ -18,7 +18,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-10">
                 <div class="p-12 text-gray-800">
                     <div class="max-w-full">
-                        <h1 class="text-center font-semibold text-3xl mb-8">Respon Petugas</h1>
+                        <h1 class="text-center font-semibold text-3xl mb-8">Tanggapan Petugas</h1>
                         @if(Auth::user()->role === 'admin' || Auth::user()->role === 'petugas')
                         @include('dashboard.complaint.partials.form-respon')
                         @endif
@@ -28,9 +28,9 @@
                                 @include('dashboard.complaint.partials.respon')
                             @else
                             @if (Auth::user()->id == $complaint->user->id)
-                            <h1 class="text-center text-black text-lg">Aduan anda belum direspon oleh petugas. Mohon tunggu.</h1>
+                            <h1 class="text-center text-black text-lg">Aduan anda belum ditanggapi oleh petugas. Mohon tunggu.</h1>
                             @else
-                            <h1 class="text-center text-black text-lg">Aduan ini belum memiliki respon.</h1>
+                            <h1 class="text-center text-black text-lg">Aduan ini belum memiliki tanggapan.</h1>
                             @endif
                             @endif
 

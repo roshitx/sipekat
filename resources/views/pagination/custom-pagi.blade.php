@@ -33,4 +33,8 @@
             <span class="relative block py-2 px-3 bg-gray-200 text-gray-500 cursor-not-allowed rounded-r-md">Next</span>
         @endif
     </nav>
+
+    <p class="text-gray-600 mt-2">
+        Menampilkan {{ $paginator->firstItem() }}-{{ $paginator->lastItem() }} dari {{ $paginator->total() }} data.
+    </p>
 @endif

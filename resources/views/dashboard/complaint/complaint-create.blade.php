@@ -43,10 +43,48 @@
                             </div>
                         </div>
 
+                        {{-- Geolocation Start --}}
                         <div class="max-w-xl">
                             <div class="form-control">
-                                <x-input-label for="description" :value="__('Deskripsi Aduan')"  />
-                                <x-textarea id="description" name="description" type="text" class="mt-1 block w-full" :placeholder="'Masukan detail aduan, sertakan lokasi dan bukti yang kuat'" required/>
+                                <x-input-label for="province" :value="__('Provinsi')" />
+                                <select name="province" id="selectProv" class="border-gray-300 focus:border-primary focus:ring-primary rounded-md shadow-sm">
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="max-w-xl">
+                            <div class="form-control" id="regencContainer" style="display: none;">
+                                <x-input-label for="regency" :value="__('Kabupaten/Kota')" />
+                                <select name="regency" id="selectRegenc" class="border-gray-300 focus:border-primary focus:ring-primary rounded-md shadow-sm">
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="max-w-xl">
+                            <div class="form-control" id="districtContainer" style="display: none;">
+                                <x-input-label for="district" :value="__('Kecamatan')" />
+                                <select name="district" id="selectDistrict" class="border-gray-300 focus:border-primary focus:ring-primary rounded-md shadow-sm">
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="max-w-xl">
+                            <div class="form-control" id="villageContainer" style="display: none;">
+                                <x-input-label for="village" :value="__('Desa/Kelurahan')" />
+                                <select name="village" id="selectVillage" class="border-gray-300 focus:border-primary focus:ring-primary rounded-md shadow-sm">
+
+                                </select>
+                            </div>
+                        </div>
+                        {{-- Geolocation End --}}
+
+                        <div class="max-w-xl">
+                            <div class="form-control">
+                                <x-input-label for="description" :value="__('Deskripsi Aduan')" />
+                                <x-textarea id="description" name="description" type="text" class="mt-1 block w-full" :placeholder="'Masukan detail aduan, sertakan lokasi dan bukti yang kuat'" required />
                                 <x-input-error class="mt-2" :messages="$errors->get('description')" />
                             </div>
                         </div>
@@ -63,11 +101,11 @@
                                         $('#reload').click(function() {
                                             $.ajax({
                                                 type: 'GET',
-                                                 url: '{{ route('reload-captcha') }}',
-                                                 success: function(data) {
+                                                url: '{{ route('reload.captcha') }}',
+                                                success: function(data) {
                                                     $('.captcha span').html(data.captcha)
-                                                }
-                                            , });
+                                                },
+                                            });
                                         });
 
                                     </script>
@@ -84,4 +122,118 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+
+            $("#selectProv").select2({
+                placeholder: 'Pilih Provinsi',
+                ajax: {
+                    url: "{{ route('provinsi.index') }}",
+                    processResults: function({
+                        data
+                    }) {
+                        return {
+                            results: $.map(data, function(item) {
+                                return {
+                                    id: item.id,
+                                    text: item.name
+                                }
+                            })
+                        }
+                    }
+                }
+            });
+
+            $("#selectProv").change(function() {
+                let id = $("#selectProv").val();
+
+                if (id) {
+                    $("#regencContainer").show();
+                } else {
+                    $("#regencContainer").hide();
+                    $("#districtContainer").hide();
+                    $("#villageContainer").hide();
+                }
+
+                $("#selectRegenc").select2({
+                    placeholder: 'Pilih Kabupaten/Kota',
+                    ajax: {
+                        url: "{{ url('selectRegenc') }}/"+ id,
+                        processResults: function({
+                            data
+                        }) {
+                            return {
+                                results: $.map(data, function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.name
+                                    }
+                                })
+                            }
+                        }
+                    }
+                });
+            });
+
+            $("#selectRegenc").change(function() {
+                let id = $("#selectRegenc").val();
+
+                if (id) {
+                    $("#districtContainer").show();
+                } else {
+                    $("#districtContainer").hide();
+                    $("#villageContainer").hide();
+                }
+
+                $("#selectDistrict").select2({
+                    placeholder: 'Pilih Kecamatan',
+                    ajax: {
+                        url: "{{ url('selectDistrict') }}/"+ id,
+                        processResults: function({
+                            data
+                        }) {
+                            return {
+                                results: $.map(data, function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.name
+                                    }
+                                })
+                            }
+                        }
+                    }
+                });
+            });
+
+            $("#selectDistrict").change(function() {
+                let id = $("#selectDistrict").val();
+
+                if (id) {
+                    $("#villageContainer").show();
+                } else {
+                    $("#villageContainer").hide();
+                }
+
+                $("#selectVillage").select2({
+                    placeholder: 'Pilih Desa/Kelurahan',
+                    ajax: {
+                        url: "{{ url('selectVillage') }}/"+ id,
+                        processResults: function({
+                            data
+                        }) {
+                            return {
+                                results: $.map(data, function(item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.name
+                                    }
+                                })
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
 </x-app-layout>

@@ -18,6 +18,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="shortcut icon" href="{{ asset('image/horn.ico') }}" type="image/x-icon">
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <!-- Select2 --->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 
 <body class="font-sans antialiased">
@@ -28,19 +31,18 @@
         @isset($header)
         <header class="bg-white shadow sticky top-0 z-40">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
+                {{ $header }}
+            </div>
+        </header>
         @endisset
 
         <!-- Page Content -->
         <main>
             {{ $slot }}
         </main>
+
+        {{-- @include('layouts.footer') --}}
     </div>
-    {{-- Datepicker  --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/datepicker.min.js"></script>
 </body>
 
 </html>
-
